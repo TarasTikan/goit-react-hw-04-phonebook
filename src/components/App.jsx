@@ -6,7 +6,7 @@ import { Filter } from './Filter/Filter';
 
 export function App() {
   const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? ''
+    JSON.parse(localStorage.getItem('contacts')) ?? []
   );
   const [filter, setFilter] = useState('');
 
@@ -15,7 +15,9 @@ export function App() {
   }, [contacts]);
 
   const onDeleteContactsItem = contactId => {
-    setContacts(prevState => prevState.filter(item => item.id !== contactId));
+    setContacts(prevContacts =>
+      prevContacts.filter(item => item.id !== contactId)
+    );
   };
 
   const onFormSubmitContacts = ({ name, number }) => {
@@ -31,14 +33,13 @@ export function App() {
     if (checkName[0] === name) {
       alert(`${checkName[0]} is already in contacts`);
     } else {
-      setContacts(prevState => [contactItems, ...prevState]);
+      setContacts(prevContacts => [contactItems, ...prevContacts]);
     }
   };
 
   const onChangeFilter = e => {
     setFilter(e.currentTarget.value);
   };
-
   const filterName = () => {
     const normalizedFiltr = filter.toLocaleLowerCase();
     return contacts.filter(contact => contact.name.includes(normalizedFiltr));
